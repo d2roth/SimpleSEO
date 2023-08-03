@@ -37,6 +37,8 @@ class Title {
 			$meta_title = get_post_meta(get_option('page_for_posts'), 'sseo_meta_title', true);
 		} elseif ((is_front_page() || is_home()) && isset($post->ID)) { /* Static */
 			$meta_title = get_post_meta($post->ID, 'sseo_meta_title', true);
+		} elseif (is_author()) {
+			$meta_title = get_the_author_meta('display_name', get_queried_object_id());
 		} elseif (isset($post->ID)) {
 			$meta_title = get_post_meta($post->ID, 'sseo_meta_title', true);
 		} else {

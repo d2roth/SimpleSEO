@@ -8,6 +8,7 @@ if (!defined('ABSPATH')) {
 }
 
 use app\Helpers\Import as Import;
+use app\init\Sitemap as Sitemap;
 
 /**
  * Administration class, menus, admin options, mostly hooks
@@ -36,22 +37,46 @@ class Admin {
 		if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
 			add_action('edited_product_cat', [$this, 'saveTaxonomy']);  
 			add_action('create_product_cat', [$this, 'saveTaxonomy']);
+			add_action('edited_product_tag', [$this, 'saveTaxonomy']);  
+			add_action('create_product_tag', [$this, 'saveTaxonomy']);
 		}
+
+		/* Sitemap */		
+		if (get_option('sseo_generate_sitemap') == true) {
+			$sitemap = new Sitemap();
+			add_action('publish_post', [$sitemap, 'buildSitemap']);
+			add_action('edit_post', [$sitemap, 'buildSitemap']);
+			add_action('delete_post', [$sitemap, 'buildSitemap']);
+		}
+		add_action('admin_post_sseo_create_sitemap', [$this, 'generateSiteMap']);
+		add_action('admin_post_sseo_delete_sitemap', [$this, 'siteMapDelete']);
     }
 
+	/**
+	 *
+	 * @since  2.0.0
+	 */
     public function addMenu() {
 		add_options_page(
-			__('SEO Options'), 
-			__('Simple SEO'), 
+			__('SEO Options', SSEO_TXTDOMAIN), 
+			__('Simple SEO', SSEO_TXTDOMAIN), 
 			'manage_options', 
 			'simpleSEOAdminOptions', 
 			[$this, 'simpleSEOAdminOptions']);
 	}
 
+	/**
+	 *
+	 * @since  2.0.0
+	 */
     public function simpleSEOAdminOptions() {
 		new Meta\Options();
 	}
-	
+
+	/**
+	 *
+	 * @since  2.0.0
+	 */
 	public function savePostData($postId) {
 		/* verify nonce */
 		if (!isset($_POST['sseo_nonce']) || !wp_verify_nonce($_POST['sseo_nonce'], SSEO_PATH)) {
@@ -86,6 +111,29 @@ class Admin {
 	 */
 	public function saveTaxonomy($term) {
 		Save::saveTaxonomy($term);
+	}
+
+	/**
+	 * Delete the current sitemap
+	 * 
+	 * @since 2.0.14
+	 */
+	public function siteMapDelete() {
+		@unlink(ABSPATH.'sitemap.xml');
+		wp_redirect('/wp-admin/options-general.php?page=simpleSEOAdminOptions&sitemap_deleted=1');		
+	}
+
+	/**
+	 * Triggers the creation of a basic sitemap
+	 * 
+	 * @since 2.0.14
+	 */
+	public function generateSiteMap() {
+		if (get_option('sseo_generate_sitemap') == true) {
+			$sitemap = new Sitemap();
+			$sitemap->buildSitemap();
+		}
+		wp_redirect('/wp-admin/options-general.php?page=simpleSEOAdminOptions&sitemap_created=1');	
 	}
 }
 

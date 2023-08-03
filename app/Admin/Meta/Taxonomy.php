@@ -39,15 +39,15 @@ class Taxonomy {
 
 		echo '
 		<tr class="form-field">
-			<th scope="row" valign="top"><label for="term_meta[sseo_title]">'.__('SEO Title', 'sseo').'</label></th>
+			<th scope="row" valign="top"><label for="term_meta[sseo_title]">'.__('SEO Title', SSEO_TXTDOMAIN).'</label></th>
 			<td><input type="text" name="term_meta[sseo_title]" id="term_meta[sseo_title]" value="'.esc_attr($meta_title).'"></td>
 		</tr>
 		<tr class="form-field">
-			<th scope="row" valign="top"><label for="term_meta[sseo_description]">'.__('SEO Description', 'sseo').'</label></th>
+			<th scope="row" valign="top"><label for="term_meta[sseo_description]">'.__('SEO Description', SSEO_TXTDOMAIN).'</label></th>
 			<td><input type="text" name="term_meta[sseo_description]" id="term_meta[sseo_description]" value="'.esc_attr($meta_description).'"></td>
 		</tr>
 		<tr class="form-field">
-			<th scope="row" valign="top"><label for="term_meta[sseo_canonical_url]">'.__('Canonical URL', 'sseo').'</label></th>
+			<th scope="row" valign="top"><label for="term_meta[sseo_canonical_url]">'.__('Canonical URL', SSEO_TXTDOMAIN).'</label></th>
 			<td><input type="text" name="term_meta[sseo_canonical_url]" id="term_meta[sseo_canonical_url]" value="'.esc_attr($canonical_url).'"></td>
 		</tr>
 		';
@@ -61,15 +61,15 @@ class Taxonomy {
 	 */
 	public function newMetaBox() {
 		echo '<div class="form-field">
-			<label for="term_meta[sseo_title]">'.__('SEO Title', 'sseo').'</label>
+			<label for="term_meta[sseo_title]">'.__('SEO Title', SSEO_TXTDOMAIN).'</label>
 			<input type="text" name="term_meta[sseo_title]" id="term_meta[sseo_title]" value="">
 		</div>
 		<div class="form-field">
-			<label for="term_meta[sseo_description]">'.__('SEO Description', 'sseo').'</label>
+			<label for="term_meta[sseo_description]">'.__('SEO Description', SSEO_TXTDOMAIN).'</label>
 			<input type="text" name="term_meta[sseo_description]" id="term_meta[sseo_description]" value="">
 		</div>
 		<div class="form-field">
-			<label for="term_meta[sseo_canonical_url]">'.__('Canonical URL', 'sseo').'</label>
+			<label for="term_meta[sseo_canonical_url]">'.__('Canonical URL', SSEO_TXTDOMAIN).'</label>
 			<input type="text" name="term_meta[sseo_canonical_url]" id="term_meta[sseo_canonical_url]" value="">
 		</div>';
 	}

@@ -3,8 +3,8 @@ Contributors: coleds
 Donate link: https://checkout.square.site/merchant/CGD6KJ0N7YECM/checkout/BN3726JNC6C6P6HL3JKNX3LC
 Tags: SEO, meta, meta keywords, mera description, meta title, woocommerce seo, post, local seo, search engine, open graph, optimization, Google, google webmaster tools, analytic, analytics, analytics 4, readability, facebook, twitter, Bing, Yandex, custom post types, custom post type, custom posts, custom post, sitemap, import rank math, import all in one seo, import yoast, 
 Requires at least: 4.6.2
-Tested up to: 6.1
-Stable tag: 2.0.11
+Tested up to: 6.2.2
+Stable tag: 2.0.21
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Requires PHP: 5.5.6
@@ -25,6 +25,7 @@ Allows the modification of META titles, descriptions and keywords for all pages 
 * Import Yoast SEO data!
 * Import Rank Math SEO data!
 * Import All In One SEO data!
+* Sitemaps!
 * Supports custom post types!
 
 == Installation ==
@@ -63,6 +64,61 @@ Release Date: November 23rd, 2022
 * Fixed a bug that was preventing the media loader from working in Elementor.
 * More translation options with the use of __() instead of just echoing. More coming.
 
+= 2.0.12 =
 
+Release Date: Jan 11th, 2023
 
+* Support for WooCommerce category and tag meta title and description.
 
+= 2.0.13 =
+
+Release Date: Jan 25th, 2023
+
+* text domains added to __() for translations.
+
+= 2.0.14 =
+
+Release Date: Feb 1st, 2023
+
+* more text domains added to __() for translations.
+* Sitemaps added back, with the option to select post types
+* og:image:url added to fix Facebook bug.
+
+= 2.0.15 =
+
+Release Date: Feb 2nd, 2023
+
+* in_array() bool value fix for sitemap post type selections.
+* I am aware of the sitemap select not working, you can still generate a sitemap, or delete one using the buttons.
+
+= 2.0.16 =
+
+Release Date: Feb 2nd, 2023
+
+* Bug fix. Attempt to read property "ID" on null.
+
+= 2.0.17 =
+
+Release Date: Feb 3rd, 2023
+
+* Bug fix. Sitemap causing redirect when editing, publishing or deleting.
+
+= 2.0.18 =
+
+Release Date: Feb 6th, 2023
+
+* Bug fix. Sitemap causing was throwing an error when deleting a page if post_types are undefined.
+
+= 2.0.19 =
+
+Release Date: Feb 27th, 2023
+
+* Bug fixes. Sitemap, and title error.
+
+= 2.0.21 =
+
+Release Date: Feb 27th, 2023
+
+* 6.2.2 update
+* Change og:type to website
+* prepping for txonomy robots noindex, nofollow

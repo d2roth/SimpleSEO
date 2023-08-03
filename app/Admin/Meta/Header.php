@@ -22,10 +22,6 @@ class Header {
 		global $post;
 		global $wp_query;
 
-		if (!is_object($post)) {
-			return;
-		}
-
 		/* double line break, we want some space to see our content within the header. */
 		echo "\n\n".'<!-- This site is optimized with the Simple SEO plugin v'.SSEO_VERSION.' - https://wordpress.org/plugins/cds-simple-seo/ -->' . "\n";
 
@@ -62,7 +58,7 @@ class Header {
 		}
 
 		$sseo_canonical_url = null;
-		if (empty($sseo_canonical_url)) {
+		if (empty($sseo_canonical_url) && isset($post->ID)) {
 			$sseo_canonical_url = get_post_meta($post->ID, 'sseo_canonical_url', true);
 		}
 
@@ -74,7 +70,7 @@ class Header {
 
 				$sseo_canonical_url = get_post_meta($shop_page_id, 'sseo_canonical_url', true);
 				$sseo_canonical_url = apply_filters('sseo_canonical_url', $sseo_canonical_url);
-			} elseif (is_product_category()) {
+			} elseif (is_product_category() || is_product_tag()) {
 				$term = $wp_query->get_queried_object();
 				if (!empty($term->term_id)) {
 					$term_meta = get_option("taxonomy_".$term->term_id);
@@ -105,25 +101,28 @@ class Header {
 			echo '<meta name="description" content="'.esc_attr($description).'" />' . "\n";
 		}
 
-		$sseo_robot_noindex = get_post_meta($post->ID, 'sseo_robot_noindex', true);
-		$sseo_robot_nofollow = get_post_meta($post->ID, 'sseo_robot_nofollow', true);
+		if (isset($post->ID)) {
+			$sseo_robot_noindex = get_post_meta($post->ID, 'sseo_robot_noindex', true);
+			$sseo_robot_nofollow = get_post_meta($post->ID, 'sseo_robot_nofollow', true);
+		
+			if (!empty($sseo_robot_noindex) && !empty($sseo_robot_nofollow)) {
+				echo '<meta name="robots" content="noindex, nofollow" />' . "\n";
+			} elseif (empty($sseo_robot_noindex) && !empty($sseo_robot_nofollow)) {
+				echo '<meta name="robots" content="nofollow" />' . "\n";
+			}
+			if (!empty($sseo_robot_noindex) && empty($sseo_robot_nofollow)) {
+				echo '<meta name="robots" content="noindex" />' . "\n";
+			}
 
-		if (!empty($sseo_robot_noindex) && !empty($sseo_robot_nofollow)) {
-			echo '<meta name="robots" content="noindex, nofollow" />' . "\n";
-		} elseif (empty($sseo_robot_noindex) && !empty($sseo_robot_nofollow)) {
-			echo '<meta name="robots" content="nofollow" />' . "\n";
-		}
-		if (!empty($sseo_robot_noindex) && empty($sseo_robot_nofollow)) {
-			echo '<meta name="robots" content="noindex" />' . "\n";
+			$sseo_fb_title = get_post_meta($post->ID, 'sseo_fb_title', true);
+			$sseo_fb_description = get_post_meta($post->ID, 'sseo_fb_description', true);
+			$sseo_fb_image_id = get_post_meta($post->ID, 'sseo_fb_image', true);
 		}
 
 		$current_url = null;
 		$sseo_fb_image = null;
 		$sseo_fb_app_id = get_option('sseo_fb_app_id');
-		$sseo_fb_title = get_post_meta($post->ID, 'sseo_fb_title', true);
-		$sseo_fb_description = get_post_meta($post->ID, 'sseo_fb_description', true);
-		$sseo_fb_image_id = get_post_meta($post->ID, 'sseo_fb_image', true);
-		if ($sseo_fb_image_id) {
+		if (isset($sseo_fb_image_id)) {
 			$sseo_fb_image = wp_get_attachment_image_url($sseo_fb_image_id, 'full');
 		}
 
@@ -138,10 +137,10 @@ class Header {
 			}
 		}
 
-		if (empty($current_url) && is_category()) {
+		if (empty($current_url) && (is_category() || is_tag() || is_tax())) {
 			$obj_id = get_queried_object_id();
 			$current_url = get_term_link($obj_id);
-		} elseif (empty($current_url)) {
+		} elseif (empty($current_url) && isset($post->ID)) {
 			$current_url = get_permalink($post->ID);
 		}
 
@@ -152,9 +151,9 @@ class Header {
 		if ($sseo_fb_app_id) { echo '<meta property="fb:app_id" content="'.esc_attr($sseo_fb_app_id).'" />' . "\n"; }
 		echo '<meta property="og:site_name" content="'.esc_attr(get_bloginfo('name')).'" />'."\n";
 		if ($current_url) { echo '<meta property="og:url" content="'.esc_url($current_url).'" />' . "\n"; }
-		if ($current_url) { echo '<meta property="og:type" content="article" />'."\n"; }
+		if ($current_url) { echo '<meta property="og:type" content="website" />'."\n"; }
 		if ($sseo_fb_title) { echo '<meta property="og:title" content="'.esc_attr($sseo_fb_title).'" />' . "\n"; }
-		if ($sseo_fb_description) { echo '<meta property="og:description" content="'.esc_attr($sseo_fb_description).'" />' . "\n"; }
+		if (isset($sseo_fb_description)) { echo '<meta property="og:description" content="'.esc_attr($sseo_fb_description).'" />' . "\n"; }
 		
 		/* Default to the featured image sense we have no Facebook image. */
 		if (empty($sseo_fb_image)) {
@@ -163,13 +162,17 @@ class Header {
 		
 		if (!empty($sseo_fb_image)) {
 			echo '<meta property="og:image" content="'.esc_url($sseo_fb_image).'" />' . "\n";
+			echo '<meta property="og:image:url" content="'.esc_url($sseo_fb_image).'" />' . "\n";
 		}
-
+		
+		if (isset($post->ID)) {
+			$sseo_tw_title = get_post_meta($post->ID, 'sseo_tw_title', true);
+			$sseo_tw_description = get_post_meta($post->ID, 'sseo_tw_description', true);
+			$sseo_tw_image_id = get_post_meta($post->ID, 'sseo_tw_image', true);
+		}
+		
 		$sseo_tw_image = null;
 		$sseo_twitter_username = get_option('sseo_twitter_username');
-		$sseo_tw_title = get_post_meta($post->ID, 'sseo_tw_title', true);
-		$sseo_tw_description = get_post_meta($post->ID, 'sseo_tw_description', true);
-		$sseo_tw_image_id = get_post_meta($post->ID, 'sseo_tw_image', true);
 		if (!empty($sseo_tw_image_id)) {
 			$sseo_tw_image = wp_get_attachment_image_url($sseo_tw_image_id, 'full');
 		}
@@ -187,7 +190,7 @@ class Header {
 		if ($sseo_tw_description) { echo '<meta name="twitter:description" content="'.esc_attr($sseo_tw_description).'" />' . "\n"; }
 		
 		/* Twitter image or featured image */
-		if (empty($sseo_tw_image) && has_post_thumbnail($post->ID)) {
+		if (empty($sseo_tw_image) && isset($post->ID) && has_post_thumbnail($post->ID)) {
 			$sseo_tw_image = wp_get_attachment_url(get_post_thumbnail_id());
 		}
 		

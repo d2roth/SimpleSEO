@@ -24,10 +24,6 @@ class Title {
 		global $post;
 		global $wp_query;
 
-		if (!is_object($post)) {
-			return;
-		}
-
 		$meta_title = null;
 		$site_name = get_bloginfo('name');
 
@@ -49,19 +45,19 @@ class Title {
 
 		/* WooCommerce */
 		if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
-			if (is_shop()) {
-				$shop_page_id = get_option('woocommerce_shop_page_id');
-				$meta_title = get_post_meta($shop_page_id, 'sseo_meta_title', true);
-				if (empty($meta_title)) {
-					$meta_title = esc_html('Shop | '.$site_name);
-				}
-			} elseif (is_product_category()) {
+			if (is_product_category() || is_product_tag()) {
 				$term = $wp_query->get_queried_object();
 				if (!empty($term->term_id)) {
 					$term_meta = get_option("taxonomy_".$term->term_id);
 					if (!empty($term_meta['sseo_title'])) {
 						$meta_title = $term_meta['sseo_title'];
 					}
+				}
+			} elseif (is_shop()) {
+				$shop_page_id = get_option('woocommerce_shop_page_id');
+				$meta_title = get_post_meta($shop_page_id, 'sseo_meta_title', true);
+				if (empty($meta_title)) {
+					$meta_title = esc_html('Shop | '.$site_name);
 				}
 			}
 		}
@@ -89,15 +85,19 @@ class Title {
 		}
 
 		if (is_search() && 0 === $wp_query->found_posts) {
-			$meta_title = __('Search Results for').'"'.esc_attr(get_search_query()).'" | '.esc_html($site_name);
+			$meta_title = __('Search Results for', SSEO_TXTDOMAIN).'"'.esc_attr(get_search_query()).'" | '.esc_html($site_name);
 		}
 
 		if (is_search()) {
-			$meta_title = __('Search Results for').'"'.esc_attr(get_search_query()).'" | '.esc_html($site_name);
+			$meta_title = __('Search Results for', SSEO_TXTDOMAIN).'"'.esc_attr(get_search_query()).'" | '.esc_html($site_name);
 		}
 
 		if (empty($meta_title)) {
-			return esc_html($post->post_title.' | '.$site_name);
+			if (!empty($post->post_title)) {
+				return esc_html($post->post_title.' | '.$site_name);
+			} else {
+				return esc_html($site_name);
+			}
 		}
 
 		return esc_html($meta_title);

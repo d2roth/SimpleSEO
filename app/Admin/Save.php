@@ -14,7 +14,7 @@ class Save {
 	 *
 	 * @since  2.0.0
 	 */
-	public function saveTaxonomy($term_id) {
+	public static function saveTaxonomy($term_id) {
 		if (isset($_POST['term_meta'])) {
 			$term_meta = get_option("taxonomy_".$term_id);
 			$cat_keys = array_keys($_POST['term_meta']);
@@ -74,44 +74,7 @@ class Save {
             update_post_meta($postId, 'sseo_meta_keywords', sanitize_text_field($_POST['sseo_meta_keywords']));
         }
 
-        $old_sseo_gsite_verification = get_post_meta($postId, 'sseo_gsite_verification', true);
-        $new_sseo_gsite_verification = null;
-        if (isset($_POST['sseo_gsite_verification'])) {
-            $new_sseo_gsite_verification = sanitize_text_field($_POST['sseo_gsite_verification']);
-        }
-
-        if ($new_sseo_gsite_verification && $new_sseo_gsite_verification != $old_sseo_gsite_verification) {
-            update_post_meta($postId, 'sseo_gsite_verification', $new_sseo_gsite_verification);
-        } elseif (empty($new_sseo_gsite_verification) && $old_sseo_gsite_verification) {
-            delete_post_meta($postId, 'sseo_gsite_verification', $old_sseo_gsite_verification);
-        }
-
-        $old_sseo_ganalytics = get_post_meta($postId, 'sseo_ganalytics', true);
-        $new_sseo_ganalytics = null;
-        if (isset($_POST['sseo_ganalytics'])) {
-            $new_sseo_ganalytics = sanitize_text_field($_POST['sseo_ganalytics']);
-        }
-
-        if ($new_sseo_ganalytics && $new_sseo_ganalytics != $old_sseo_ganalytics) {
-            update_post_meta($postId, 'sseo_ganalytics', $new_sseo_ganalytics);
-        } elseif (empty($new_sseo_ganalytics) && $old_sseo_ganalytics) {
-            delete_post_meta($postId, 'sseo_ganalytics', $old_sseo_ganalytics);
-        }
-
-        $old_sseo_g4analytics = get_post_meta($postId, 'sseo_g4analytics', true);
-        $new_sseo_g4analytics = null;
-        if (isset($_POST['sseo_g4analytics'])) {
-            $new_sseo_g4analytics = sanitize_text_field($_POST['sseo_g4analytics']);
-        }
-
-        if ($new_sseo_g4analytics && $new_sseo_g4analytics != $old_sseo_g4analytics) {
-            update_post_meta($postId, 'sseo_g4analytics', $new_sseo_g4analytics);
-        } elseif (empty($new_sseo_g4analytics) && $old_sseo_g4analytics) {
-            delete_post_meta($postId, 'sseo_g4analytics', $old_sseo_g4analytics);
-        }
-
         /* Robots */
-
         if (!empty($_POST['sseo_robot_noindex'])) {
             update_post_meta($postId, 'sseo_robot_noindex', sanitize_text_field($_POST['sseo_robot_noindex']));
         } else {
@@ -220,32 +183,6 @@ class Save {
             update_post_meta($postId, 'sseo_tw_image', $new_tw_image);
         } elseif (empty($new_tw_image) && $old_tw_image) {
             delete_post_meta($postId, 'sseo_tw_image', $old_tw_image);
-        }
-
-        /* Bing */
-        $old_sseo_bing = get_post_meta($postId, 'sseo_bing', true);
-        $new_sseo_bing = null;
-        if (isset($_POST['sseo_bing'])) {
-            $new_sseo_bing = sanitize_text_field($_POST['sseo_bing']);
-        }
-
-        if ($new_sseo_bing && $new_sseo_bing != $old_sseo_bing) {
-            update_post_meta($postId, 'sseo_bing', $new_sseo_bing);
-        } elseif (empty($new_sseo_bing) && $old_sseo_bing) {
-            delete_post_meta($postId, 'sseo_bing', $old_sseo_bing);
-        }
-
-        /* Yandex */
-        $old_sseo_yandex = get_post_meta($postId, 'sseo_yandex', true);
-        $new_sseo_yandex = null;
-        if (isset($_POST['sseo_yandex'])) {
-            $new_sseo_yandex = sanitize_text_field($_POST['sseo_yandex']);
-        }
-
-        if ($new_sseo_yandex && $new_sseo_yandex != $old_sseo_yandex) {
-            update_post_meta($postId, 'sseo_yandex', $new_sseo_yandex);
-        } elseif (empty($new_sseo_yandex) && $old_sseo_yandex) {
-            delete_post_meta($postId, 'sseo_yandex', $old_sseo_yandex);
         }
 	}
 	

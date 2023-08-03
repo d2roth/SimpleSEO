@@ -57,6 +57,8 @@ class init {
 		if (in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option('active_plugins')))) {
 			add_action('product_cat_add_form_fields', [$this, 'renderNewTaxonomyMetaBox']);
 			add_action('product_cat_edit_form_fields', [$this, 'renderEditTaxonomyMetaBox']);
+			add_action('product_tag_add_form_fields', [$this, 'renderNewTaxonomyMetaBox']);
+			add_action('product_tag_edit_form_fields', [$this, 'renderEditTaxonomyMetaBox']);
 		}
 		
 		/* Header, Title, Meta */
@@ -67,6 +69,12 @@ class init {
 		
 		/* Analytics */
 		add_filter('wp_head', [$this, 'renderAnalytics']);
+		
+		/* Sitemap */
+		if (get_option('sseo_generate_sitemap') == true) {
+			/* disable WordPress sitemaps in favor of SimpleSEO sitemap. */
+			apply_filters('wp_sitemaps_enabled', false);
+		}
 	}
 	
 	/**
@@ -94,6 +102,8 @@ class init {
 		register_setting('sseo-settings-group', 'sseo_tw_description');
 		register_setting('sseo-settings-group', 'sseo_tw_image');
 		register_setting('sseo-settings-group', 'sseo_canonical_url');
+		register_setting('sseo-settings-group', 'sseo_generate_sitemap');
+		register_setting('sseo-settings-group', 'sseo_sitemap_post_types');
     }
 	
 	/**
@@ -118,9 +128,9 @@ class init {
 	 * @since  2.0.0
 	 */
 	public function columnHeading($columns) {
-		$columns['post_name'] = __('Post Name');
-		$columns['seo_title'] = __('SEO Title');
-		$columns['seo_description'] = __('Meta Description');
+		$columns['post_name'] = __('Post Name', SSEO_TXTDOMAIN);
+		$columns['seo_title'] = __('SEO Title', SSEO_TXTDOMAIN);
+		$columns['seo_description'] = __('Meta Description', SSEO_TXTDOMAIN);
 		return $columns;
 	}
 

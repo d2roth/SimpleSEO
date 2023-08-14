@@ -3,8 +3,8 @@ Contributors: coleds
 Donate link: https://checkout.square.site/merchant/CGD6KJ0N7YECM/checkout/BN3726JNC6C6P6HL3JKNX3LC
 Tags: SEO, meta, meta keywords, mera description, meta title, woocommerce seo, post, local seo, search engine, open graph, optimization, Google, google webmaster tools, analytic, analytics, analytics 4, readability, facebook, twitter, Bing, Yandex, custom post types, custom post type, custom posts, custom post, sitemap, import rank math, import all in one seo, import yoast, 
 Requires at least: 4.6.2
-Tested up to: 6.2.2
-Stable tag: 2.0.21
+Tested up to: 6.3
+Stable tag: 2.0.22
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Requires PHP: 5.5.6
@@ -122,3 +122,12 @@ Release Date: Feb 27th, 2023
 * 6.2.2 update
 * Change og:type to website
 * prepping for txonomy robots noindex, nofollow
+
+= 2.0.22 =
+
+Release Date: Aug 10th, 2023
+
+* 6.3 update
+* Google site verification meta tag added.
+* Tags, Categories no index, follow added.
+* Daniel Roth, Thank you! Added title filter, spacing issues fixed, along with some other changes.

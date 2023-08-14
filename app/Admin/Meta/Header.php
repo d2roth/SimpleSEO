@@ -199,6 +199,11 @@ class Header {
 			echo '<meta name="twitter:card" content="summary_large_image">' . "\n";
 		}
 
+		$sseo_gsite_verification = esc_attr(get_option('sseo_gsite_verification'));
+		if ($sseo_gsite_verification) {
+			echo '<meta name="google-site-verification" content="'.esc_attr($sseo_gsite_verification).'" />' . "\n";
+		}
+
 		$sseo_baidu = esc_attr(get_option('sseo_baidu'));
 		if ($sseo_baidu) {
 			echo '<meta name="baidu-site-verification" content="'.esc_attr($sseo_baidu).'" />' . "\n";

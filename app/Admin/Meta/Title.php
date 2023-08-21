@@ -38,7 +38,7 @@ class Title {
 		} elseif ((is_front_page() || is_home()) && isset($post->ID)) { /* Static */
 			$meta_title = get_post_meta($post->ID, 'sseo_meta_title', true);
 		} elseif (is_author()) {
-			$meta_title = get_the_author_meta('display_name', get_queried_object_id());
+			$meta_title = get_the_author_meta('display_name', get_queried_object_id()).' | '.$site_name;
 		} elseif (isset($post->ID)) { /* Must be after conditionals as it will be set if posts appear on page */
 			$meta_title = get_post_meta($post->ID, 'sseo_meta_title', true);
 		} else {

@@ -87,11 +87,11 @@ class Title {
 		}
 
 		if (is_search() && 0 === $wp_query->found_posts) {
-			$meta_title = __('Search Results for', SSEO_TXTDOMAIN).' "'.esc_attr(get_search_query()).'" | '.esc_html($site_name);
+			$meta_title = sprintf( __('No search results found for "%s"', SSEO_TXTDOMAIN), esc_attr(get_search_query()) );
 		}
 
 		if (is_search()) {
-			$meta_title = __('Search Results for', SSEO_TXTDOMAIN).' "'.esc_attr(get_search_query()).'" | '.esc_html($site_name);
+			$meta_title = sprintf( __('Search results for "%s"', SSEO_TXTDOMAIN), esc_attr(get_search_query()) );
 		}
 
 		if (empty($meta_title)) {

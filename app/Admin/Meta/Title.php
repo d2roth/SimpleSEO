@@ -96,9 +96,9 @@ class Title {
 
 		if (empty($meta_title)) {
 			if (!empty($post->post_title)) {
-				return esc_html($post->post_title.' | '.$site_name);
+				$meta_title = esc_html($post->post_title.' | '.$site_name);
 			} else {
-				return esc_html($site_name);
+				$meta_title = esc_html($site_name);
 			}
 		}
 
